@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "Davidood <dwhywood@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --mode development"
+  },
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
@@ -14,5 +17,10 @@
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.2.1"
+  },
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-hot-loader": "^4.8.2"
   }
 }
