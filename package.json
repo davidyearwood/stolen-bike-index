@@ -7,7 +7,7 @@
   "scripts": {
     "start": "webpack-dev-server --mode development",
     "test": "jest",
-    "eslint": "npx eslint"
+    "eslint": "./node_modules/.bin/eslint"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
@@ -32,6 +32,7 @@
     "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
+    "lint-staged": "^8.1.5",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -56,7 +57,10 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn test && yarn eslint"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.{js,jsx}": ["eslint --fix", "yarn test", "git add"]
   }
 }
