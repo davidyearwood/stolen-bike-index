@@ -1,0 +1,16 @@
+.btn {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  background-color: #5181DE;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: "Heebo", Arial, Helvetica, sans-serif;
+  font-size: 1em;
+  padding: .512em 0.8em;
+}
+
+.btn:hover {
+  background-color: #4067b1;
+}

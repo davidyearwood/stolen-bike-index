@@ -32,16 +32,15 @@
     "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
+    "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-hot-loader": "^4.8.2"
   },
   "jest": {
     "setupFilesAfterEnv": [
-      "react-testing-library/cleanup-after-each"
-    ],
-    "modulePaths": [
-      "<rootDir>"
+      "react-testing-library/cleanup-after-each",
+      "jest-dom/extend-expect"
     ],
     "moduleFileExtensions": [
       "js",
