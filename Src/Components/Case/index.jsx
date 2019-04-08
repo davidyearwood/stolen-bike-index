@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from "./case.css";
-import BikeImg from "../images/bike-placeholder.jpg";
-import unixToDate from "../util/unixToDate";
+import BikeImg from "../../images/bike-placeholder.jpg";
+import unixToDate from "../../util/unixToDate";
 
 function Case({
   title, description, date, address, imgSrc,
