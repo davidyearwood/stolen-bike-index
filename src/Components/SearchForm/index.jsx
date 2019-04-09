@@ -7,7 +7,7 @@ import styles from "./searchForm.css";
 function SearchForm() {
   return (
     <form method="GET" action="/" className={styles.l_row}>
-      <div className={styles.l_col5}>
+      <div className={styles.l_col6}>
         <Input label="Search case descriptions" placeholder="Search case descriptions" />
       </div>
       <div className={`${styles.l_col2} ${styles.inputWithIcon}`}>
@@ -18,7 +18,7 @@ function SearchForm() {
         <Input label="To" placeholder="To" />
         <span className={styles.icon}><CalendarIcon height={30} width={30}/></span>
       </div>
-      <div className={styles.l_col2}>
+      <div className={`${styles.l_col2} ${styles.noMarginRight}`}>
         <Button>Find Cases</Button>
       </div>
     </form>
