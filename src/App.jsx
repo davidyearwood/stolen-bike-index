@@ -5,6 +5,8 @@ import Button from "./Components/Button";
 import AngleRight from "./Components/Svg/AngleRight";
 import Case from "./Components/Case";
 import SearchForm from "./Components/SearchForm";
+import Header from "./Components/Header";
+import styles from "./App.css";
 
 class App extends Component {
   constructor(props) {
@@ -149,24 +151,21 @@ class App extends Component {
     const { cases } = this.state;
 
     return cases.map(c => (
-      <Case
-        title={c.title}
-        description={c.description}
-        date={c.occurred_at}
-        address={c.address}
-      />
+      <div className={styles.mTop} key={c.id}>
+        <Case
+          title={c.title}
+          description={c.description}
+          date={c.occurred_at}
+          address={c.address}
+        />
+      </div>
     ));
   }
 
   render() {
     return (
-      <div>
-        <div className="App">
-          <Button>
-          This is a test
-            <AngleRight fill="#fff" height={25} width={25} />
-          </Button>
-        </div>
+      <div className={styles.container}>
+        <Header />
         <SearchForm />
         { this.renderCases() }
       </div>
