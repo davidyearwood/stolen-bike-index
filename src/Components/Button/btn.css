@@ -9,6 +9,7 @@
   font-family: "Heebo", Arial, Helvetica, sans-serif;
   font-size: 1em;
   padding: .512em 0.8em;
+  width: 100%;
 }
 
 .btn:hover {
