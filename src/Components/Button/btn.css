@@ -10,6 +10,7 @@
   font-size: 1em;
   padding: .512em 0.8em;
   width: 100%;
+  align-items: center;
 }
 
 .btn:hover {
