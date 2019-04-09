@@ -4,7 +4,7 @@ import "./App.css";
 import Button from "./Components/Button";
 import AngleRight from "./Components/Svg/AngleRight";
 import Case from "./Components/Case";
-import Input from "./Components/Input";
+import SearchForm from "./Components/SearchForm";
 
 class App extends Component {
   constructor(props) {
@@ -167,7 +167,7 @@ class App extends Component {
             <AngleRight fill="#fff" height={25} width={25} />
           </Button>
         </div>
-        <Input placeholder="Search case descriptions" label="Case Search Field" />
+        <SearchForm />
         { this.renderCases() }
       </div>
     );
