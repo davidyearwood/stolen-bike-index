@@ -6,10 +6,11 @@ import CalendarIcon from "../Svg/Calendar";
 import styles from "./searchForm.css";
 
 function SearchForm({
-  onCaseChange, caseValue, fromDateValue, onFromDateChange, toDateValue, onToDateChange,
+  onCaseChange, caseValue, fromDateValue, onFromDateChange,
+  toDateValue, onToDateChange, onButtonClick, onFormSubmit,
 }) {
   return (
-    <form method="GET" action="/" className={styles.l_row} data-testid="search-form">
+    <form method="GET" className={styles.l_row} data-testid="search-form" onSubmit={onFormSubmit}>
       <div className={styles.l_col6}>
         <Input
           label="Search case descriptions"
@@ -43,7 +44,7 @@ function SearchForm({
         <span className={styles.icon}><CalendarIcon height={30} width={30} /></span>
       </div>
       <div className={`${styles.l_col2} ${styles.noMarginRight}`}>
-        <Button>Find Cases</Button>
+        <Button onClick={onButtonClick}>Find Cases</Button>
       </div>
     </form>
   );
@@ -56,6 +57,8 @@ SearchForm.defaultProps = {
   onToDateChange: null,
   onFromDateChange: null,
   onCaseChange: null,
+  onButtonClick: null,
+  onFormSubmit: null,
 };
 
 SearchForm.propTypes = {
@@ -65,6 +68,8 @@ SearchForm.propTypes = {
   onFromDateChange: PropTypes.func,
   toDateValue: PropTypes.string,
   fromDateValue: PropTypes.string,
+  onButtonClick: PropTypes.func,
+  onFormSubmit: PropTypes.func,
 };
 
 export default SearchForm;
