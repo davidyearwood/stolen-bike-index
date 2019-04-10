@@ -6,8 +6,8 @@ import CalendarIcon from "../Svg/Calendar";
 import styles from "./searchForm.css";
 
 function SearchForm({
-  onCaseChange, caseValue, fromDateValue, onFromDateChange,
-  toDateValue, onToDateChange, onButtonClick, onFormSubmit,
+  onCaseChange, caseValue, startDateValue, onStartDateChange,
+  endDateValue, onEndDateChange, onButtonClick, onFormSubmit,
 }) {
   return (
     <form method="GET" className={styles.l_row} data-testid="search-form" onSubmit={onFormSubmit}>
@@ -25,8 +25,8 @@ function SearchForm({
           label="From"
           placeholder="From"
           type="date"
-          onChange={onFromDateChange}
-          value={fromDateValue}
+          onChange={onStartDateChange}
+          value={startDateValue}
           name="From"
           data-testid="fromDate"
         />
@@ -37,8 +37,8 @@ function SearchForm({
           label="To"
           placeholder="To"
           type="date"
-          onChange={onToDateChange}
-          value={toDateValue}
+          onChange={onEndDateChange}
+          value={endDateValue}
           name="To"
         />
         <span className={styles.icon}><CalendarIcon height={30} width={30} /></span>
@@ -52,22 +52,22 @@ function SearchForm({
 
 SearchForm.defaultProps = {
   caseValue: "",
-  toDateValue: "",
-  fromDateValue: "",
-  onToDateChange: null,
-  onFromDateChange: null,
-  onCaseChange: null,
-  onButtonClick: null,
-  onFormSubmit: null,
+  endDateValue: "",
+  startDateValue: "",
+  onEndDateChange: e => e.preventDefault(),
+  onStartDateChange: e => e.preventDefault(),
+  onCaseChange: e => e.preventDefault(),
+  onButtonClick: e => e.preventDefault(),
+  onFormSubmit: e => e.preventDefault(),
 };
 
 SearchForm.propTypes = {
   onCaseChange: PropTypes.func,
   caseValue: PropTypes.string,
-  onToDateChange: PropTypes.func,
-  onFromDateChange: PropTypes.func,
-  toDateValue: PropTypes.string,
-  fromDateValue: PropTypes.string,
+  onEndDateChange: PropTypes.func,
+  onStartDateChange: PropTypes.func,
+  endDateValue: PropTypes.string,
+  startDateValue: PropTypes.string,
   onButtonClick: PropTypes.func,
   onFormSubmit: PropTypes.func,
 };

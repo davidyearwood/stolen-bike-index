@@ -22,8 +22,8 @@ function Input({
 Input.defaultProps = {
   placeholder: "",
   type: "text",
-  value: "",
-  onChange: null,
+  value: null,
+  onChange: e => e.preventDefault(),
 };
 
 Input.propTypes = {
