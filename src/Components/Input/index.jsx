@@ -4,6 +4,7 @@ import styles from "./input.css";
 
 function Input({
   placeholder, label, onChange, value, type,
+  ...attr
 }) {
   return (
     <input
@@ -13,6 +14,7 @@ function Input({
       aria-label={label}
       onChange={onChange}
       value={value}
+      {...attr}
     />
   );
 }

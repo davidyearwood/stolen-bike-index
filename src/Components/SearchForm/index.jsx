@@ -11,14 +11,35 @@ function SearchForm({
   return (
     <form method="GET" action="/" className={styles.l_row} data-testid="search-form">
       <div className={styles.l_col6}>
-        <Input label="Search case descriptions" placeholder="Search case descriptions" onChange={onCaseChange} value={caseValue} />
+        <Input
+          label="Search case descriptions"
+          placeholder="Search case descriptions"
+          onChange={onCaseChange}
+          value={caseValue}
+          name="Case"
+        />
       </div>
       <div className={`${styles.l_col2} ${styles.inputWithIcon}`}>
-        <Input label="From" placeholder="From" type="date" onChange={onFromDateChange} value={fromDateValue} />
+        <Input
+          label="From"
+          placeholder="From"
+          type="date"
+          onChange={onFromDateChange}
+          value={fromDateValue}
+          name="From"
+          data-testid="fromDate"
+        />
         <span className={styles.icon}><CalendarIcon height={30} width={30} /></span>
       </div>
       <div className={`${styles.l_col2} ${styles.inputWithIcon}`}>
-        <Input label="To" placeholder="To" type="date" onChange={onToDateChange} value={toDateValue} />
+        <Input
+          label="To"
+          placeholder="To"
+          type="date"
+          onChange={onToDateChange}
+          value={toDateValue}
+          name="To"
+        />
         <span className={styles.icon}><CalendarIcon height={30} width={30} /></span>
       </div>
       <div className={`${styles.l_col2} ${styles.noMarginRight}`}>

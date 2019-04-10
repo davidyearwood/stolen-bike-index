@@ -17,7 +17,7 @@ class App extends Component {
       cases: [],
       query: {
         occuredBeforeVal: "",
-        occuredAfterVal: -1,
+        occuredAfterVal: "",
         caseVal: "",
       },
     };
