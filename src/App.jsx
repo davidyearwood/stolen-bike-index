@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { hot } from "react-hot-loader";
-import { getTime } from "date-fns";
+import { getTime, format } from "date-fns";
 import Case from "./Components/Case";
 import SearchForm from "./Components/SearchForm";
 import Header from "./Components/Header";
@@ -19,33 +19,40 @@ class App extends Component {
       caseHasError: false,
       cases: [],
       query: {
-        occuredBeforeVal: "",
-        occuredAfterVal: "",
+        endDate: "",
+        startDate: "",
         caseVal: "",
       },
       proximity: "41.881832, -87.623177",
     };
 
     this.handleCaseSearchField = this.handleCaseSearchField.bind(this);
-    this.handleFromDateField = this.handleFromDateField.bind(this);
-    this.handleToDateField = this.handleToDateField.bind(this);
+    this.handleStartDateField = this.handleStartDateField.bind(this);
+    this.handleEndDateField = this.handleEndDateField.bind(this);
     this.fetchCases = this.fetchCases.bind(this);
   }
 
   fetchCases(e) {
+    e.preventDefault();
     const {
       query,
       proximity,
     } = this.state;
+
     const proximitySquare = 50;
     const perPage = 10;
     const pageNo = 1;
-    const beforeDate = query.occuredBeforeVal ? getTime(new Date(query.occuredBeforeVal)) : "";
-    const afterDate = query.occuredAfterVal ? getTime(new Date(query.occuredAfterVal)) : "";
+    const occurredBefore = query.endDate ? parseInt(getTime(format(query.endDate)) / 1000, 10) : "";
+    const occurredAfter = query.startDate ? parseInt(getTime(format(query.startDate)) / 1000, 10) : "";
 
-    const url = `https://bikewise.org:443/api/v2/incidents?page=${pageNo}&per_page=${perPage}&proximity=${proximity}&proximity_square=${proximitySquare}&query=${query.caseVal}&occurred_before=${beforeDate}&occured_after=${afterDate}`;
-
-    e.preventDefault();
+    const url = new URL("https://bikewise.org:443/api/v2/incidents");
+    url.searchParams.set("occurred_after", occurredAfter);
+    url.searchParams.set("occurred_before", occurredBefore);
+    url.searchParams.set("proximity", proximity);
+    url.searchParams.set("proximity_square", proximitySquare);
+    url.searchParams.set("query", query.caseVal);
+    url.searchParams.set("per_page", perPage);
+    url.searchParams.set("page", pageNo);
 
     this.setState({
       isCaseLoading: true,
@@ -57,11 +64,26 @@ class App extends Component {
       .then(resp => resp.json())
       .then((json) => {
         const { incidents } = json;
+        if (incidents.length === 0) {
+          this.setState({
+            isCaseLoading: false,
+            isCaseEmpty: true,
+            caseHasError: false,
+            cases: incidents,
+          });
+        } else {
+          this.setState({
+            isCaseLoading: false,
+            isCaseEmpty: false,
+            caseHasError: false,
+            cases: incidents,
+          });
+        }
+      }).catch((error) => {
         this.setState({
           isCaseLoading: false,
           isCaseEmpty: false,
-          caseHasError: false,
-          cases: incidents,
+          caseHasError: error,
         });
       });
   }
@@ -76,22 +98,24 @@ class App extends Component {
     });
   }
 
-  handleFromDateField(e) {
+  handleStartDateField(e) {
     const { query } = this.state;
+    console.log(`start date: ${e.target.value}`);
     this.setState({
       query: {
         ...query,
-        occuredBeforeVal: e.target.value,
+        startDate: e.target.value,
       },
     });
   }
 
-  handleToDateField(e) {
+  handleEndDateField(e) {
     const { query } = this.state;
+    console.log(`end date: ${e.target.value}`);
     this.setState({
       query: {
         ...query,
-        occuredAfterVal: e.target.value,
+        endDate: e.target.value,
       },
     });
   }
@@ -121,10 +145,10 @@ class App extends Component {
         <SearchForm
           onCaseChange={this.handleCaseSearchField}
           caseValue={query.caseVal}
-          fromDateValue={query.occuredBeforeVal}
-          onFromDateChange={this.handleFromDateField}
-          toDateValue={query.occuredAfterVal}
-          onToDateChange={this.handleToDateField}
+          startDateValue={query.startDate}
+          onStartDateChange={this.handleStartDateField}
+          endDateValue={query.endDate}
+          onEndDateChange={this.handleEndDateField}
           onButtonClick={this.fetchCases}
           onFormSubmit={this.fetchCases}
         />
