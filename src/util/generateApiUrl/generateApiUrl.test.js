@@ -1,4 +1,4 @@
-import generateApiUrl from "./generateApiUrl";
+import generateApiUrl from "./index";
 
 test("It should add query parameters to the URL", () => {
   const queryParams = {
