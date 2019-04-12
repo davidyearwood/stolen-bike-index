@@ -236,8 +236,8 @@ class App extends Component {
     return (
       <div className={styles.container}>
         {this.renderHeader()}
-        <div>
-          <p>{`Total: ${total}`}</p>
+        <div className={styles.totalContainer}>
+          <p className={styles.totalCases}>{`Total: ${total}`}</p>
         </div>
         { this.renderCases() }
         <Pagination

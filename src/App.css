@@ -13,3 +13,14 @@
 .mTop {
   margin-top: 1.2rem;
 }
+
+.totalContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.totalCases {
+  font-family: "Heebo", Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+}

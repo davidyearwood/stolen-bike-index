@@ -20,6 +20,7 @@ const generateButtons = (count, onClick, activePage) => {
 
   return buttons;
 };
+
 function Pagination({ buttonsCount, onClick, activePage }) {
   return (
     <ul className={`${gridStyles.l_row} ${styles.pagination}`}>
