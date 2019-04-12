@@ -9,6 +9,7 @@ import Pagination from "./Components/Pagination";
 import Loading from "./Components/Loading";
 import EmptyMessage from "./Components/EmptyMessage";
 import ErrorMessage from "./Components/ErrorMessage";
+import generateApiUrl from "./util/generateApiUrl";
 
 class App extends Component {
   constructor(props) {
@@ -24,12 +25,18 @@ class App extends Component {
         caseVal: "",
       },
       proximity: "41.881832, -87.623177",
+      perPage: 10,
+      startIndex: 0,
+      pageNo: 1,
+      total: 0,
+      totalPages: 0,
     };
 
     this.handleCaseSearchField = this.handleCaseSearchField.bind(this);
     this.handleStartDateField = this.handleStartDateField.bind(this);
     this.handleEndDateField = this.handleEndDateField.bind(this);
     this.fetchCases = this.fetchCases.bind(this);
+    this.handlePaginationClick = this.handlePaginationClick.bind(this);
   }
 
   fetchCases(e) {
@@ -37,22 +44,23 @@ class App extends Component {
     const {
       query,
       proximity,
+      perPage,
+      pageNo,
     } = this.state;
 
     const proximitySquare = 50;
-    const perPage = 10;
-    const pageNo = 1;
     const occurredBefore = query.endDate ? parseInt(getTime(format(query.endDate)) / 1000, 10) : "";
     const occurredAfter = query.startDate ? parseInt(getTime(format(query.startDate)) / 1000, 10) : "";
 
-    const url = new URL("https://bikewise.org:443/api/v2/incidents");
-    url.searchParams.set("occurred_after", occurredAfter);
-    url.searchParams.set("occurred_before", occurredBefore);
-    url.searchParams.set("proximity", proximity);
-    url.searchParams.set("proximity_square", proximitySquare);
-    url.searchParams.set("query", query.caseVal);
-    url.searchParams.set("per_page", perPage);
-    url.searchParams.set("page", pageNo);
+    const url = generateApiUrl({
+      occured_before: occurredBefore,
+      occured_after: occurredAfter,
+      proximity,
+      proximity_square: proximitySquare,
+      query: query.caseVal,
+      per_page: 30,
+      page: pageNo,
+    });
 
     this.setState({
       isCaseLoading: true,
@@ -70,6 +78,7 @@ class App extends Component {
             isCaseEmpty: true,
             caseHasError: false,
             cases: incidents,
+            total: 0,
           });
         } else {
           this.setState({
@@ -77,6 +86,8 @@ class App extends Component {
             isCaseEmpty: false,
             caseHasError: false,
             cases: incidents,
+            total: incidents.length,
+            totalPages: Math.ceil(incidents.length / perPage),
           });
         }
       }).catch((error) => {
@@ -98,9 +109,39 @@ class App extends Component {
     });
   }
 
+  handlePaginationClick(e) {
+    const {
+      pageNo,
+      startIndex,
+      perPage,
+      totalPages,
+      total,
+    } = this.state;
+
+    if (Number.isInteger(parseInt(e.target.value, 10))) {
+      this.setState({
+        pageNo: parseInt(e.target.value, 10),
+        startIndex: (parseInt(e.target.value, 10) * perPage) - perPage,
+      });
+    } else if (e.target.value === "previous") {
+      const previousPage = pageNo - 1;
+      this.setState({
+        pageNo: previousPage < 1 ? 1 : previousPage,
+        startIndex: (startIndex - 10) <= 0 ? 0 : startIndex - 10,
+      });
+    } else if (e.target.value === "next") {
+      const nextPage = pageNo + 1;
+      this.setState({
+        pageNo: nextPage >= totalPages ? totalPages : nextPage,
+        startIndex: (startIndex + 10) >= total ? startIndex : startIndex + 10,
+      });
+    } else {
+      throw new Error("Page number or page start index is out of bounds");
+    }
+  }
+
   handleStartDateField(e) {
     const { query } = this.state;
-    console.log(`start date: ${e.target.value}`);
     this.setState({
       query: {
         ...query,
@@ -111,7 +152,6 @@ class App extends Component {
 
   handleEndDateField(e) {
     const { query } = this.state;
-    console.log(`end date: ${e.target.value}`);
     this.setState({
       query: {
         ...query,
@@ -121,9 +161,13 @@ class App extends Component {
   }
 
   renderCases() {
-    const { cases } = this.state;
+    const {
+      cases, perPage, startIndex,
+      pageNo,
+    } = this.state;
+    const currentCases = cases.slice(startIndex, pageNo * perPage);
 
-    return cases.map(c => (
+    return currentCases.map(c => (
       <div className={styles.mTop} key={c.id}>
         <Case
           title={c.title}
@@ -158,7 +202,8 @@ class App extends Component {
 
   render() {
     const {
-      isCaseEmpty, isCaseLoading, caseHasError,
+      isCaseEmpty, isCaseLoading, caseHasError, total,
+      totalPages, pageNo,
     } = this.state;
 
     if (isCaseEmpty) {
@@ -191,8 +236,15 @@ class App extends Component {
     return (
       <div className={styles.container}>
         {this.renderHeader()}
+        <div>
+          <p>{`Total: ${total}`}</p>
+        </div>
         { this.renderCases() }
-        <Pagination />
+        <Pagination
+          buttonsCount={totalPages}
+          onClick={this.handlePaginationClick}
+          activePage={pageNo}
+        />
       </div>
     );
   }
