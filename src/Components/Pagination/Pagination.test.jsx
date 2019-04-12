@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "react-testing-library";
-import Pagination from "../index";
+import Pagination from "./index";
 
 test("It should render a 'Prev' button", () => {
   const { queryByText } = render(<Pagination buttonsCount={3} />);
